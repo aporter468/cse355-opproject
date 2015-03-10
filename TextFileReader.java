@@ -23,8 +23,16 @@ public class TextFileReader
         try
         {
             fileIn = new Scanner (new File(fileName +".txt"));
-            readSpecificationAutomata();
-            readSystemAutomata();
+
+            fileIn.nextLine();
+            ArrayList<String> alphabet = readAlphabet();
+            System.out.println(alphabet.toString());
+            String nextSection = fileIn.next();
+            if(nextSection.equals("Specification"))
+            {
+                readSpecificationAutomata();
+            }
+           // readSystemAutomata();
 
         }
         catch (Exception e)
@@ -34,9 +42,30 @@ public class TextFileReader
 
     }
 
+    private ArrayList<String> readAlphabet()
+    {
+        ArrayList<String> a = new ArrayList<String>();
+        String next = fileIn.next();
+
+        while(!next.equals("%"))
+        {
+            a.add(next);
+            next = fileIn.next();
+        }
+        return a;
+
+    }
+
     private void readSpecificationAutomata()
     {
-        System.out.println(fileIn.next());
+      fileIn.nextLine();
+       fileIn.nextLine();
+      String  transitionLine = fileIn.nextLine();
+       while(!transitionLine.startsWith("%"))
+       {
+           System.out.println("transition: "+transitionLine+"\n");
+           transitionLine = fileIn.nextLine();
+        }
     }
 
     private void readSystemAutomata()
