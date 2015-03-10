@@ -9,11 +9,14 @@ public class FiniteAutomata
     private boolean deterministic;
     private ArrayList<String> states;
     private ArrayList<String> alphabet;
-
-    public FiniteAutomata()
+    private String initState;
+    private ArrayList<String> finalStates;
+    public FiniteAutomata(ArrayList<String> alphabet,String initState, ArrayList<String>finalStates)
     {
-       
+        this.alphabet = alphabet;
+        this.initState =initState;
+        this.finalStates =finalStates;
     }
 
-    
+
 }

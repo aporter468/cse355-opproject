@@ -30,10 +30,17 @@ public class TextFileReader
             String nextSection = fileIn.next();
             if(nextSection.equals("Specification"))
             {
-                readSpecificationAutomata();
+                fileIn.nextLine();
+                readAutomata(alphabet);
             }
-           // readSystemAutomata();
-
+            if(fileIn.hasNextLine())
+            {
+                String nextLine = fileIn.nextLine();
+                if(nextLine.startsWith("%"))
+                {
+                    readAutomata(alphabet);
+                }
+            }
         }
         catch (Exception e)
         {
@@ -56,21 +63,34 @@ public class TextFileReader
 
     }
 
-    private void readSpecificationAutomata()
+    private void readAutomata(ArrayList<String> alphabet)
     {
-      fileIn.nextLine();
-       fileIn.nextLine();
-      String  transitionLine = fileIn.nextLine();
-       while(!transitionLine.startsWith("%"))
-       {
-           System.out.println("transition: "+transitionLine+"\n");
-           transitionLine = fileIn.nextLine();
+
+        fileIn.nextLine();
+        String  transitionLine = fileIn.nextLine();
+        while(!transitionLine.startsWith("%"))
+        {
+            System.out.println("transition: "+transitionLine+"\n");
+            transitionLine = fileIn.nextLine();
         }
+        String initState = fileIn.nextLine();
+        System.out.println("init: "+initState);
+        fileIn.nextLine();//junk for final...
+         ArrayList<String> finalStates = new ArrayList<String>();
+        String finalStateLine = fileIn.nextLine();
+
+        while(!finalStateLine.startsWith("%") )
+        {
+            System.out.println("finalStates: "+finalStateLine+"\n");
+            finalStates.add(finalStateLine);
+            if(fileIn.hasNext())
+                finalStateLine = fileIn.nextLine();
+            else
+                break;
+
+        }
+    FiniteAutomata newFA = new FiniteAutomata(alphabet,initState,finalStates);
     }
 
-    private void readSystemAutomata()
-    {
-        System.out.println(fileIn.next());
-    }
 
 }

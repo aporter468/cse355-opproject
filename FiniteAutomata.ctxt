@@ -1,4 +1,4 @@
 #BlueJ class context
-comment0.params=
-comment0.target=FiniteAutomata()
+comment0.params=alphabet\ initState\ finalStates
+comment0.target=FiniteAutomata(java.util.ArrayList,\ java.lang.String,\ java.util.ArrayList)
 numComments=1
