@@ -1,33 +1,47 @@
 
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.*;
+import java.io.*;
+import javax.imageio.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.event.*;
+import java.util.*;
 /**
- * Write a description of class TextFileReader here.
+ *Constructs instances of FiniteAutomata from text file input and returns them to caller
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Alex Porter
  */
 public class TextFileReader
 {
-    // instance variables - replace the example below with your own
-    private int x;
-
-    /**
-     * Constructor for objects of class TextFileReader
-     */
-    public TextFileReader()
+    private String fileName;
+    private Scanner fileIn;
+    public TextFileReader(String fileName)
     {
-        // initialise instance variables
-        x = 0;
+        this.fileName = fileName;
+        try
+        {
+            fileIn = new Scanner (new File(fileName +".txt"));
+            readSpecificationAutomata();
+            readSystemAutomata();
+
+        }
+        catch (Exception e)
+        {
+            System.out.println("file cannot be loaded");
+        }
+
     }
 
-    /**
-     * An example of a method - replace this comment with your own
-     * 
-     * @param  y   a sample parameter for a method
-     * @return     the sum of x and y 
-     */
-    public int sampleMethod(int y)
+    private void readSpecificationAutomata()
     {
-        // put your code here
-        return x + y;
+        System.out.println(fileIn.next());
     }
+
+    private void readSystemAutomata()
+    {
+        System.out.println(fileIn.next());
+    }
+
 }
