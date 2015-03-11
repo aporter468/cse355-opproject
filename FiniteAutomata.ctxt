@@ -1,6 +1,16 @@
 #BlueJ class context
-comment0.params=alphabet\ initState\ finalStates
-comment0.target=FiniteAutomata(java.util.ArrayList,\ java.lang.String,\ java.util.ArrayList)
-comment1.params=transitionsIn
-comment1.target=void\ addTransitions(java.util.ArrayList)
-numComments=2
+comment0.params=alphabet\ initState\ finalStates\ transitionsList
+comment0.target=FiniteAutomata(java.util.ArrayList,\ java.lang.String,\ java.util.ArrayList,\ java.util.ArrayList)
+comment1.params=
+comment1.target=void\ construct()
+comment2.params=
+comment2.target=boolean\ isDFA()
+comment3.params=
+comment3.target=void\ convertToDFA()
+comment4.params=
+comment4.target=void\ convertToComplement()
+comment5.params=
+comment5.target=java.lang.String\ findAcceptedString()
+comment6.params=FA2
+comment6.target=void\ makeIntersection(FiniteAutomata)
+numComments=7

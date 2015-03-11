@@ -92,8 +92,8 @@ public class TextFileReader
                 break;
 
         }
-    FA = new FiniteAutomata(alphabet,initState,finalStates);
-    FA.addTransitions(transitions);
+    FA = new FiniteAutomata(alphabet,initState,finalStates,transitions);
+
     }
 
 

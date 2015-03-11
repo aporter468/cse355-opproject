@@ -11,26 +11,68 @@ public class FiniteAutomata
     private ArrayList<String> alphabet;
     private String initState;
     private ArrayList<String> finalStates;
+    private ArrayList<String> transitionsList;
+    private State[] states;
     private int numStates;
-    private String[][] transitions;
-    public FiniteAutomata(ArrayList<String> alphabet,String initState, ArrayList<String>finalStates)
+    public FiniteAutomata(ArrayList<String> alphabet,String initState, ArrayList<String>finalStates, ArrayList<String> transitionsList)
     {
         this.alphabet = alphabet;
         this.initState =initState;
         this.finalStates =finalStates;
-        transitions = new String[10][10];
+        this.transitionsList = transitionsList;
+        int numStates = 0;
+        construct();
+        states = new State[100];//max specified is 100. need array to have access by index from init.
     }
 
-    public void addTransitions(ArrayList<String> transitionsIn)
+    private void construct()
     {
-        for(int i =0; i<transitionsIn.size();i++)
+        //add initial, accept states
+        //loop over transitions to make states list
+        for(int i =0; i<transitionsList.size();i++)
         {
-            Scanner tScan = new Scanner(transitionsIn.get(i));
+        }
+        //loop over transitions to add transitions to existing states
+        for(int i =0; i<transitionsList.size();i++)
+        {
+            Scanner tScan = new Scanner(transitionsList.get(i));
             int start = Integer.parseInt(tScan.next());
             String trans = tScan.next();
             int end = Integer.parseInt(tScan.next());
-            transitions[start][end] = trans;
+
         }
+    }
+
+    public boolean isDFA()
+    {
+        return false;
+    }
+
+    public void convertToDFA()
+    {
+        if (isDFA()) return;
+
+    }
+
+    public void convertToComplement()
+    {
+       /* ArrayList<String> newFinalStates = new ArrayList<String>();
+        for(int i =0; i<100; i++)
+        {
+            if(finalStates.indexOf(i+"") == -1 && isState[i])
+                newFinalStates.add(i+"");
+        }
+        finalStates = newFinalStates;*/
+
+    }
+
+    public String findAcceptedString()//do this recursively
+    {
+        return "";
+    }
+
+    public void makeIntersection(FiniteAutomata FA2)
+    {
     }
 
 }
