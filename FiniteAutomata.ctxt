@@ -1,4 +1,6 @@
 #BlueJ class context
 comment0.params=alphabet\ initState\ finalStates
 comment0.target=FiniteAutomata(java.util.ArrayList,\ java.lang.String,\ java.util.ArrayList)
-numComments=1
+comment1.params=transitionsIn
+comment1.target=void\ addTransitions(java.util.ArrayList)
+numComments=2

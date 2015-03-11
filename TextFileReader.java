@@ -17,6 +17,8 @@ public class TextFileReader
 {
     private String fileName;
     private Scanner fileIn;
+    private FiniteAutomata specFA;
+    private FiniteAutomata sysFA;
     public TextFileReader(String fileName)
     {
         this.fileName = fileName;
@@ -31,14 +33,16 @@ public class TextFileReader
             if(nextSection.equals("Specification"))
             {
                 fileIn.nextLine();
-                readAutomata(alphabet);
+                fileIn.nextLine();
+                readAutomata(alphabet,specFA);
             }
             if(fileIn.hasNextLine())
             {
                 String nextLine = fileIn.nextLine();
+
                 if(nextLine.startsWith("%"))
                 {
-                    readAutomata(alphabet);
+                    readAutomata(alphabet,sysFA);
                 }
             }
         }
@@ -63,25 +67,24 @@ public class TextFileReader
 
     }
 
-    private void readAutomata(ArrayList<String> alphabet)
+    private void readAutomata(ArrayList<String> alphabet, FiniteAutomata FA)
     {
 
-        fileIn.nextLine();
+
         String  transitionLine = fileIn.nextLine();
+        ArrayList<String> transitions = new ArrayList<String>();
         while(!transitionLine.startsWith("%"))
         {
-            System.out.println("transition: "+transitionLine+"\n");
+            transitions.add(transitionLine);
             transitionLine = fileIn.nextLine();
         }
         String initState = fileIn.nextLine();
-        System.out.println("init: "+initState);
         fileIn.nextLine();//junk for final...
          ArrayList<String> finalStates = new ArrayList<String>();
         String finalStateLine = fileIn.nextLine();
 
         while(!finalStateLine.startsWith("%") )
         {
-            System.out.println("finalStates: "+finalStateLine+"\n");
             finalStates.add(finalStateLine);
             if(fileIn.hasNext())
                 finalStateLine = fileIn.nextLine();
@@ -89,7 +92,8 @@ public class TextFileReader
                 break;
 
         }
-    FiniteAutomata newFA = new FiniteAutomata(alphabet,initState,finalStates);
+    FA = new FiniteAutomata(alphabet,initState,finalStates);
+    FA.addTransitions(transitions);
     }
 
 
