@@ -14,6 +14,7 @@ public class FiniteAutomata
     private ArrayList<String> transitionsList;
     private State[] states;
     private int numStates;
+
     public FiniteAutomata(ArrayList<String> alphabet,String initState, ArrayList<String>finalStates, ArrayList<String> transitionsList)
     {
         this.alphabet = alphabet;
@@ -21,16 +22,41 @@ public class FiniteAutomata
         this.finalStates =finalStates;
         this.transitionsList = transitionsList;
         int numStates = 0;
-        construct();
         states = new State[100];//max specified is 100. need array to have access by index from init.
+
+
+           construct();
     }
 
     private void construct()
     {
-        //add initial, accept states
         //loop over transitions to make states list
         for(int i =0; i<transitionsList.size();i++)
         {
+            Scanner tScan = new Scanner(transitionsList.get(i));
+            int start = Integer.parseInt(tScan.next());
+            String trans = tScan.next();
+            int end = Integer.parseInt(tScan.next());
+             if(states[start]==null)
+            {
+                states[start] = new State(start,alphabet,false,false);
+             
+                System.out.println("start: "+start+" constructed");
+
+            }
+            if(states[end] == null)
+            {
+                states[end] = new State(end,alphabet,false,false);
+                System.out.println("end: "+end+" constructed");
+            }
+        }
+        //set initial, accept states
+        int startIndex = Integer.parseInt(initState);
+        states[startIndex].setStart(true);
+        for(int i =0; i<finalStates.size(); i++)
+        {
+            int stateIndex = Integer.parseInt(finalStates.get(i));
+            states[stateIndex].setAccept(true);
         }
         //loop over transitions to add transitions to existing states
         for(int i =0; i<transitionsList.size();i++)
@@ -56,11 +82,11 @@ public class FiniteAutomata
 
     public void convertToComplement()
     {
-       /* ArrayList<String> newFinalStates = new ArrayList<String>();
+        /* ArrayList<String> newFinalStates = new ArrayList<String>();
         for(int i =0; i<100; i++)
         {
-            if(finalStates.indexOf(i+"") == -1 && isState[i])
-                newFinalStates.add(i+"");
+        if(finalStates.indexOf(i+"") == -1 && isState[i])
+        newFinalStates.add(i+"");
         }
         finalStates = newFinalStates;*/
 
