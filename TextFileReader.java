@@ -93,7 +93,7 @@ public class TextFileReader
 
         }
     FA = new FiniteAutomata(alphabet,initState,finalStates,transitions);
-
+    FA.convertToDFA();
     }
 
 

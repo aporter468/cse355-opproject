@@ -87,20 +87,37 @@ public class FiniteAutomata
         newStatesList.add(newInitState);
         while(stateQueue.size()>0)
         {
-                    State currentState = stateQueue.get(0);
+            State currentState = stateQueue.get(0);
             for(int i = 0; i<alphabet.size(); i++)
             {
                 ArrayList<State> toStatesList = currentState.getTransitionsOn(alphabet.get(i));
                 //check toStates list against existing combo states in new States list
-                //if is actually unique, add to list and queue, other wise point currentState to original
+                int existingIndex = -1;
+                for(int j  =0; j<newStatesList.size(); j++)
+                {
+                    if( newStatesList.get(j).matchesStatesCombined(toStatesList))
+                        existingIndex = j;
+                }
+               
+                //determine if combination of states is new; connect to existing state for that set of states or create
+                if(existingIndex>-1)
+                {
+                    //connect to existin
+                    currentState.addTransition(alphabet.get(i),newStatesList.get(existingIndex));
+                }
+                else
+                {
+                    State newComboState = new State(0,alphabet,false,false);
+                    newComboState.setPrevStatesCombined(toStatesList);
+                    currentState.addTransition(alphabet.get(i),newComboState);
+                    stateQueue.add(newComboState);
+                    newStatesList.add(newComboState);
+                }
+
             }
             stateQueue.remove(0);//pop off FIFO queue
 
         }
-
-        //while has queue
-        //go through alphabet as transition from first in queue
-        //add states to combinedStates list, stateQueue and statesList as necessary
 
         //map newStatesLsit to states[], initState, and acceptStates so conversion is complete.
     }

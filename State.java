@@ -11,7 +11,7 @@ public class State
     private ArrayList<String> transOn;
     private boolean isStart;
     private boolean isAccept;
-    private ArrayList<Integer> prevStatesCombined;//for nfa to dfa- list of states from the nfa that this dfa state corresponds to
+    private ArrayList<State> prevStatesCombined;//for nfa to dfa- list of states from the nfa that this dfa state corresponds to
     public State(int index, ArrayList<String> alphabet, boolean isStart, boolean isAccept)
     {
         this.index = index;
@@ -20,7 +20,7 @@ public class State
         transOn = new ArrayList<String>();
         this.isStart = isStart;
         this.isAccept = isAccept;
-        prevStatesCombined = new ArrayList<Integer>();
+        prevStatesCombined = new ArrayList<State>();
     }
 
     public ArrayList<State> getTransitionsOn(String a)
@@ -34,10 +34,16 @@ public class State
                 transOnA.add(transTo.get(i));
             }
         }
-        return transOnA;
+        return sortStateList(transOnA);
 
     }
-    
+
+    private ArrayList<State> sortStateList(ArrayList<State> list)
+    {
+        //TODO: sorting
+        return list;
+    }
+
     public ArrayList<Integer> getIndicesTransitionsOn(String a)
     {
         //find indices of a in transOn, return list of corresponding states
@@ -77,17 +83,23 @@ public class State
         }
     }
 
-    public boolean matchesPrevStatesCombined(ArrayList<Integer> otherStatesList)
+    public boolean matchesStatesCombined(ArrayList<State> otherStatesList)//assumes in order
     {
         //TODO: match checking, even if out of order?
-        return false;
+        if(prevStatesCombined.size()!=otherStatesList.size()) return false;
+        for(int i =0; i<prevStatesCombined.size(); i++)
+        {
+            if(prevStatesCombined.get(i).getIndex()!=otherStatesList.get(i).getIndex())
+                return false;
+        }
+        return true;
     }
-    
-    //getters and setters
-    
-    public void setPrevStatesCombined(ArrayList<Integer> psc){  prevStatesCombined = psc; }
 
-    public ArrayList<Integer> getPrevStatesCombined(){ return prevStatesCombined;}
+    //getters and setters
+
+    public void setPrevStatesCombined(ArrayList<State> psc){  prevStatesCombined = psc; }
+
+    public ArrayList<State> getPrevStatesCombined(){ return prevStatesCombined;}
 
     public void setStart(boolean isStart){ this.isStart = isStart; }
 
