@@ -82,7 +82,10 @@ public class FiniteAutomata
 
         //first combined state is just initial; push new init onto queue, add to newStatesList
         State newInitState = new State(0,alphabet,true,false);
-
+        ArrayList<State> initPrevStates = new ArrayList<State>();
+        initPrevStates.add(states[Integer.parseInt(initState)]);
+        newInitState.setPrevStatesCombined(initPrevStates);
+        System.out.println("queue starting with: "+initState);
         stateQueue.add(newInitState);
         newStatesList.add(newInitState);
         while(stateQueue.size()>0)
@@ -91,6 +94,7 @@ public class FiniteAutomata
             for(int i = 0; i<alphabet.size(); i++)
             {
                 ArrayList<State> toStatesList = currentState.getTransitionsOn(alphabet.get(i));
+                System.out.println("toStatesList: "+toStatesList.toString());
                 //check toStates list against existing combo states in new States list
                 int existingIndex = -1;
                 for(int j  =0; j<newStatesList.size(); j++)
@@ -103,10 +107,12 @@ public class FiniteAutomata
                 if(existingIndex>-1)
                 {
                     //connect to existin
+                    System.out.println("connection to existing.");
                     currentState.addTransition(alphabet.get(i),newStatesList.get(existingIndex));
                 }
                 else
                 {
+                    System.out.println("adding combostate for: "+toStatesList.toString());
                     State newComboState = new State(0,alphabet,false,false);
                     newComboState.setPrevStatesCombined(toStatesList);
                     currentState.addTransition(alphabet.get(i),newComboState);
@@ -118,7 +124,7 @@ public class FiniteAutomata
             stateQueue.remove(0);//pop off FIFO queue
 
         }
-
+       
         //map newStatesLsit to states[], initState, and acceptStates so conversion is complete.
     }
 

@@ -26,15 +26,17 @@ public class State
     public ArrayList<State> getTransitionsOn(String a)
     {
         //find indices of a in transOn, return list of corresponding states
+        System.out.println("getting transitions for " +toString()+" on "+a);
         ArrayList<State> transOnA = new ArrayList<State>();
         for(int i =0; i<transTo.size(); i++)
         {
             if(transOn.get(i).equals(a))
             {
+                   System.out.println("added transition: "+a+" "+transTo.get(i).toString());
                 transOnA.add(transTo.get(i));
             }
         }
-        return sortStateList(transOnA);
+        return transOnA;//sortStateList(transOnA);
 
     }
 
@@ -79,7 +81,7 @@ public class State
         {
             transTo.add(toState);
             transOn.add(a);
-            System.out.println("trans from:" +index+" to "+toState.getIndex()+" on "+a);
+            System.out.println("trans from:" +index+" to "+toState.toString()+" on "+a);
         }
     }
 
@@ -96,7 +98,10 @@ public class State
     }
 
     //getters and setters
-
+    public String toString()
+    {
+        return "State: "+index;
+    }
     public void setPrevStatesCombined(ArrayList<State> psc){  prevStatesCombined = psc; }
 
     public ArrayList<State> getPrevStatesCombined(){ return prevStatesCombined;}
