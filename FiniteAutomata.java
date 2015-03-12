@@ -76,15 +76,33 @@ public class FiniteAutomata
 
     public void convertToDFA()
     {
-       // if (isDFA()) return null;
-        ArrayList<State> stateQueue = new ArrayList<State>();
+        // if (isDFA()) return null;
+        ArrayList<State> stateQueue = new ArrayList<State>();//FIFO queue for adding states as they are used
         ArrayList<State> newStatesList = new ArrayList<State>();
+
         //first combined state is just initial; push new init onto queue, add to newStatesList
+        State newInitState = new State(0,alphabet,true,false);
+
+        stateQueue.add(newInitState);
+        newStatesList.add(newInitState);
+        while(stateQueue.size()>0)
+        {
+                    State currentState = stateQueue.get(0);
+            for(int i = 0; i<alphabet.size(); i++)
+            {
+                ArrayList<State> toStatesList = currentState.getTransitionsOn(alphabet.get(i));
+                //check toStates list against existing combo states in new States list
+                //if is actually unique, add to list and queue, other wise point currentState to original
+            }
+            stateQueue.remove(0);//pop off FIFO queue
+
+        }
+
         //while has queue
-            //go through alphabet as transition from first in queue
-            //add states to combinedStates list, stateQueue and statesList as necessary
-     
-      //map newStatesLsit to states[], initState, and acceptStates so conversion is complete.
+        //go through alphabet as transition from first in queue
+        //add states to combinedStates list, stateQueue and statesList as necessary
+
+        //map newStatesLsit to states[], initState, and acceptStates so conversion is complete.
     }
 
     public void convertToComplement()
@@ -99,6 +117,7 @@ public class FiniteAutomata
         }
 
     }
+
     public String findAcceptedString()//do this recursively
     {
         return "";

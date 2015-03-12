@@ -37,6 +37,21 @@ public class State
         return transOnA;
 
     }
+    
+    public ArrayList<Integer> getIndicesTransitionsOn(String a)
+    {
+        //find indices of a in transOn, return list of corresponding states
+        ArrayList<Integer> transOnA = new ArrayList<Integer>();
+        for(int i =0; i<transTo.size(); i++)
+        {
+            if(transOn.get(i).equals(a))
+            {
+                transOnA.add(transTo.get(i).getIndex());
+            }
+        }
+        return transOnA;
+
+    }
 
     public State getFirstTransitionOn(String a)
     {
