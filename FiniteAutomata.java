@@ -93,7 +93,7 @@ public class FiniteAutomata
             State currentState = stateQueue.get(0);
             for(int i = 0; i<alphabet.size(); i++)
             {
-                ArrayList<State> toStatesList = currentState.getTransitionsOn(alphabet.get(i));
+                ArrayList<State> toStatesList = getToStatesList(currentState);
                 System.out.println("toStatesList: "+toStatesList.toString());
                 //check toStates list against existing combo states in new States list
                 int existingIndex = -1;
@@ -127,7 +127,18 @@ public class FiniteAutomata
        
         //map newStatesLsit to states[], initState, and acceptStates so conversion is complete.
     }
-
+    private ArrayList<State> getToStatesList(State start)
+    {
+        ArrayList<State> toStates = new ArrayList<State>();
+        for(int i =0; i<start.getPrevStatesCombined().size(); i++)
+        {
+            ArrayList<State> temp = start.getPrevStatesCombined().get(i).getTransitionsOn(alphabet.get(i));
+            for(int j = 0; j<temp.size(); j++)
+                toStates.add(temp.get(j));
+        }
+        return toStates;
+        
+    }
     public void convertToComplement()
     {
         for(int i = 0; i<100; i++)
