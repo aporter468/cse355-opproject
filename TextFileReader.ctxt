@@ -1,8 +1,10 @@
 #BlueJ class context
-comment0.params=fileName
-comment0.target=TextFileReader(java.lang.String)
-comment1.params=
-comment1.target=java.util.ArrayList\ readAlphabet()
-comment2.params=alphabet\ FA
-comment2.target=void\ readAutomata(java.util.ArrayList,\ FiniteAutomata)
-numComments=3
+comment0.params=args
+comment0.target=void\ main(java.lang.String[])
+comment1.params=fileName
+comment1.target=TextFileReader(java.lang.String)
+comment2.params=
+comment2.target=java.util.ArrayList\ readAlphabet()
+comment3.params=alphabet\ FA
+comment3.target=void\ readAutomata(java.util.ArrayList,\ FiniteAutomata)
+numComments=4

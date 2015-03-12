@@ -19,6 +19,10 @@ public class TextFileReader
     private Scanner fileIn;
     private FiniteAutomata specFA;
     private FiniteAutomata sysFA;
+    public static void main(String args[])
+    {
+        TextFileReader tfr = new TextFileReader("exmp01_M2");
+    }
     public TextFileReader(String fileName)
     {
         this.fileName = fileName;
