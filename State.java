@@ -11,6 +11,7 @@ public class State
     private ArrayList<String> transOn;
     private boolean isStart;
     private boolean isAccept;
+    private ArrayList<Integer> prevStatesCombined;//for nfa to dfa- list of states from the nfa that this dfa state corresponds to
     public State(int index, ArrayList<String> alphabet, boolean isStart, boolean isAccept)
     {
         this.index = index;
@@ -19,6 +20,7 @@ public class State
         transOn = new ArrayList<String>();
         this.isStart = isStart;
         this.isAccept = isAccept;
+        prevStatesCombined = new ArrayList<Integer>();
     }
 
     public ArrayList<State> getTransitionsOn(String a)
@@ -56,21 +58,30 @@ public class State
         {
             transTo.add(toState);
             transOn.add(a);
+            System.out.println("trans from:" +index+" to "+toState.getIndex()+" on "+a);
         }
     }
 
-
+    public boolean matchesPrevStatesCombined(ArrayList<Integer> otherStatesList)
+    {
+        //TODO: match checking, even if out of order?
+        return false;
+    }
     
-//getters and setters
+    //getters and setters
+    
+    public void setPrevStatesCombined(ArrayList<Integer> psc){  prevStatesCombined = psc; }
 
-public void setStart(boolean isStart){ this.isStart = isStart; }
+    public ArrayList<Integer> getPrevStatesCombined(){ return prevStatesCombined;}
 
-public void setAccept(boolean isAccept){ this.isAccept = isAccept; }
+    public void setStart(boolean isStart){ this.isStart = isStart; }
 
-public boolean getStart(){return isStart;}
+    public void setAccept(boolean isAccept){ this.isAccept = isAccept; }
 
-public boolean getAccept(){return isAccept;}
+    public boolean getStart(){return isStart;}
 
-public int getIndex(){ return index;}
+    public boolean getAccept(){return isAccept;}
+
+    public int getIndex(){ return index;}
 
 }

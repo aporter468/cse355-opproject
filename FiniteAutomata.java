@@ -24,8 +24,7 @@ public class FiniteAutomata
         int numStates = 0;
         states = new State[100];//max specified is 100. need array to have access by index from init.
 
-
-           construct();
+        construct();
     }
 
     private void construct()
@@ -37,10 +36,10 @@ public class FiniteAutomata
             int start = Integer.parseInt(tScan.next());
             String trans = tScan.next();
             int end = Integer.parseInt(tScan.next());
-             if(states[start]==null)
+            if(states[start]==null)
             {
                 states[start] = new State(start,alphabet,false,false);
-             
+
                 System.out.println("start: "+start+" constructed");
 
             }
@@ -65,6 +64,7 @@ public class FiniteAutomata
             int start = Integer.parseInt(tScan.next());
             String trans = tScan.next();
             int end = Integer.parseInt(tScan.next());
+            states[start].addTransition(trans,states[end]);
 
         }
     }
@@ -76,22 +76,29 @@ public class FiniteAutomata
 
     public void convertToDFA()
     {
-        if (isDFA()) return;
-
+       // if (isDFA()) return null;
+        ArrayList<State> stateQueue = new ArrayList<State>();
+        ArrayList<State> newStatesList = new ArrayList<State>();
+        //first combined state is just initial; push new init onto queue, add to newStatesList
+        //while has queue
+            //go through alphabet as transition from first in queue
+            //add states to combinedStates list, stateQueue and statesList as necessary
+     
+      //map newStatesLsit to states[], initState, and acceptStates so conversion is complete.
     }
 
     public void convertToComplement()
     {
-        /* ArrayList<String> newFinalStates = new ArrayList<String>();
-        for(int i =0; i<100; i++)
+        for(int i = 0; i<100; i++)
         {
-        if(finalStates.indexOf(i+"") == -1 && isState[i])
-        newFinalStates.add(i+"");
+            if(states[i]!=null)
+            {
+                boolean isAccept = states[i].getAccept();
+                states[i].setAccept(!isAccept);
+            }
         }
-        finalStates = newFinalStates;*/
 
     }
-
     public String findAcceptedString()//do this recursively
     {
         return "";
