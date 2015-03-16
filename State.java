@@ -26,13 +26,12 @@ public class State
     public ArrayList<State> getTransitionsOn(String a)
     {
         //find indices of a in transOn, return list of corresponding states
-        System.out.println("getting transitions for " +toString()+" on "+a);
+
         ArrayList<State> transOnA = new ArrayList<State>();
         for(int i =0; i<transTo.size(); i++)
         {
             if(transOn.get(i).equals(a))
             {
-                System.out.println("added transition: "+a+" "+transTo.get(i).toString());
                 transOnA.add(transTo.get(i));
             }
         }

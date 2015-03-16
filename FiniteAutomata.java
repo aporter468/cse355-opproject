@@ -121,7 +121,7 @@ public class FiniteAutomata
                         else
                         {
                             System.out.println("adding combostate for: "+toStatesList.toString());
-                            State newComboState = new State(0,alphabet,false,false);
+                            State newComboState = new State(newStatesList.size(),alphabet,false,false);
                             newComboState.setPrevStatesCombined(toStatesList);
                             currentState.addTransition(alphabet.get(i),newComboState);
                             stateQueue.add(newComboState);
@@ -138,9 +138,11 @@ public class FiniteAutomata
             //map to actual vals for this FA
              states = new State[100];
              finalStates = new ArrayList<String>();
+             System.out.println("result: \n");
              for(int i =0;i<newStatesList.size();i++)
              {
                  State newStatei = newStatesList.get(i);
+                 System.out.println(newStatei.getIndex()+" "+newStatei.getTransitionsOn("a")+" "+newStatei.getTransitionsOn("b"));
                  states[newStatei.getIndex()] = newStatei;
                  if(newStatei.getAccept())
                  {
