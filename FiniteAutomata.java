@@ -142,7 +142,7 @@ public class FiniteAutomata
              for(int i =0;i<newStatesList.size();i++)
              {
                  State newStatei = newStatesList.get(i);
-                 System.out.println(newStatei.getIndex()+" "+newStatei.getTransitionsOn("a")+" "+newStatei.getTransitionsOn("b"));
+                 System.out.println(newStatei.getIndex()+"from "+newStatei.getPrevStatesCombined()+" "+newStatei.getTransitionsOn("a")+" "+newStatei.getTransitionsOn("b"));
                  states[newStatei.getIndex()] = newStatei;
                  if(newStatei.getAccept())
                  {

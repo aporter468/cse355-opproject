@@ -21,7 +21,7 @@ public class TextFileReader
     private FiniteAutomata sysFA;
     public static void main(String args[])
     {
-        TextFileReader tfr = new TextFileReader("exmp01_M1");
+        TextFileReader tfr = new TextFileReader("test2");
     }
     public TextFileReader(String fileName)
     {
