@@ -90,55 +90,84 @@ public class FiniteAutomata
         newStatesList.add(newInitState);
         while(stateQueue.size()>0)
         {
+            System.out.println("Queue: "+stateQueue.toString());
             State currentState = stateQueue.get(0);
+             System.out.println("current: "+currentState.toString());
             for(int i = 0; i<alphabet.size(); i++)
             {
-                ArrayList<State> toStatesList = getToStatesList(currentState);
-                System.out.println("toStatesList: "+toStatesList.toString());
-                //check toStates list against existing combo states in new States list
-                int existingIndex = -1;
-                for(int j  =0; j<newStatesList.size(); j++)
+                ArrayList<State> toStatesList = getToStatesList(currentState,alphabet.get(i));
+                if(toStatesList.size()>0)
                 {
-                    if( newStatesList.get(j).matchesStatesCombined(toStatesList))
-                        existingIndex = j;
+                    System.out.println("toStatesList: "+toStatesList.toString());
+                    //check toStates list against existing combo states in new States list
+                    int existingIndex = -1;
+                    for(int j  =0; j<newStatesList.size(); j++)
+                    {
+                        if( newStatesList.get(j).matchesStatesCombined(toStatesList))
+                        {
+                            existingIndex = j;
+                            System.out.println("Existing index: "+j+" state index: "+newStatesList.get(j).getIndex());
+                        }
+                    }
+
+                    //determine if combination of states is new; connect to existing state for that set of states or create
+                   
+                        if(existingIndex>-1)
+                        {
+                            //connect to existin
+                            System.out.println("connection to existing.");
+                            currentState.addTransition(alphabet.get(i),newStatesList.get(existingIndex));
+                        }
+                        else
+                        {
+                            System.out.println("adding combostate for: "+toStatesList.toString());
+                            State newComboState = new State(0,alphabet,false,false);
+                            newComboState.setPrevStatesCombined(toStatesList);
+                            currentState.addTransition(alphabet.get(i),newComboState);
+                            stateQueue.add(newComboState);
+                            newStatesList.add(newComboState);
+                        }
+                    
+                 
+
                 }
-               
-                //determine if combination of states is new; connect to existing state for that set of states or create
-                if(existingIndex>-1)
-                {
-                    //connect to existin
-                    System.out.println("connection to existing.");
-                    currentState.addTransition(alphabet.get(i),newStatesList.get(existingIndex));
-                }
-                else
-                {
-                    System.out.println("adding combostate for: "+toStatesList.toString());
-                    State newComboState = new State(0,alphabet,false,false);
-                    newComboState.setPrevStatesCombined(toStatesList);
-                    currentState.addTransition(alphabet.get(i),newComboState);
-                    stateQueue.add(newComboState);
-                    newStatesList.add(newComboState);
-                }
+            }
+                stateQueue.remove(0);//pop off FIFO queue
 
             }
-            stateQueue.remove(0);//pop off FIFO queue
+            //map to actual vals for this FA
+             states = new State[100];
+             finalStates = new ArrayList<String>();
+             for(int i =0;i<newStatesList.size();i++)
+             {
+                 State newStatei = newStatesList.get(i);
+                 states[newStatei.getIndex()] = newStatei;
+                 if(newStatei.getAccept())
+                 {
+                     finalStates.add(newStatei.getIndex()+"");
+                  }
+                  if(newStatei.getStart())
+                  {
+                  initState = newStatei.getIndex()+"";
+                }
+             }
 
         }
-       
-        //map newStatesLsit to states[], initState, and acceptStates so conversion is complete.
-    }
-    private ArrayList<State> getToStatesList(State start)
-    {
+        private ArrayList<State> getToStatesList(State start, String alph)
+        {
         ArrayList<State> toStates = new ArrayList<State>();
         for(int i =0; i<start.getPrevStatesCombined().size(); i++)
         {
-            ArrayList<State> temp = start.getPrevStatesCombined().get(i).getTransitionsOn(alphabet.get(i));
+            ArrayList<State> temp = start.getPrevStatesCombined().get(i).getTransitionsOn(alph);
             for(int j = 0; j<temp.size(); j++)
                 toStates.add(temp.get(j));
+                
+         
         }
         return toStates;
-        
+
     }
+
     public void convertToComplement()
     {
         for(int i = 0; i<100; i++)

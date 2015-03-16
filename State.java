@@ -32,19 +32,16 @@ public class State
         {
             if(transOn.get(i).equals(a))
             {
-                   System.out.println("added transition: "+a+" "+transTo.get(i).toString());
+                System.out.println("added transition: "+a+" "+transTo.get(i).toString());
                 transOnA.add(transTo.get(i));
             }
         }
-        return transOnA;//sortStateList(transOnA);
+                sortStatesList(transOnA);
+        return transOnA;
+
 
     }
 
-    private ArrayList<State> sortStateList(ArrayList<State> list)
-    {
-        //TODO: sorting
-        return list;
-    }
 
     public ArrayList<Integer> getIndicesTransitionsOn(String a)
     {
@@ -102,6 +99,7 @@ public class State
     {
         return "State: "+index;
     }
+
     public void setPrevStatesCombined(ArrayList<State> psc){  prevStatesCombined = psc; }
 
     public ArrayList<State> getPrevStatesCombined(){ return prevStatesCombined;}
@@ -115,5 +113,11 @@ public class State
     public boolean getAccept(){return isAccept;}
 
     public int getIndex(){ return index;}
+
+    public static ArrayList<State> sortStatesList(ArrayList<State> list)
+    {
+        return list;
+    }
+    
 
 }
