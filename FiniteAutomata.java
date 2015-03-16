@@ -14,7 +14,7 @@ public class FiniteAutomata
     private ArrayList<String> transitionsList;
     private State[] states;
     private int numStates;
-
+    private boolean stringFound = false;
     public FiniteAutomata(ArrayList<String> alphabet,String initState, ArrayList<String>finalStates, ArrayList<String> transitionsList)
     {
         this.alphabet = alphabet;
@@ -217,36 +217,55 @@ public class FiniteAutomata
     {
         State currentState = states[Integer.parseInt(initState)];
         String w = "";
+
         w = buildAcceptedString(currentState,w);
+        System.out.println("w built? "+w);
         return w;
     }
 
     private String buildAcceptedString(State s,String w)
     {
-        if(s.getAccept())
+        if(s.getAccept() )
         {
-            if(w.length() == 0)
-                return "epsilon";
-            else
-                return w;
-        }     
+            stringFound = true;
+            if(w.length()==0)
+            {
+                return "(epsilon)";
+            }
+            return "";
+
+        } 
+        else if (w.length()>10)
+        {
+            return "nostring";
+        }
         else
         {
             for(int i =0; i<alphabet.size();i++)
             {
                 ArrayList<State> nextStates = s.getTransitionsOn(alphabet.get(i));
-                if(nextStates.size()>0)
+                String attempt = "";
+                for(int j = 0;j<nextStates.size();j++)
                 {
-                    for(int j = 0;j<1;j++)
+                    if(nextStates.get(j).getIndex()!= s.getIndex())
                     {
-                        w = buildAcceptedString(nextStates.get(j),alphabet.get(i)+w);
-                        if(w.length()>0)
-                            return w;
+                        String next = buildAcceptedString(nextStates.get(j),w+alphabet.get(i));
+                        if(next.equals("nostring"))
+                        {
+                            attempt = "nostring";
+                        }
+                        else
+                        {
+                            return alphabet.get(i)+next;
+                        }
                     }
                 }
+
             }
-            return w;
+            return "nostring";
+
         }
+
     }
 
     public void makeIntersection(FiniteAutomata FA2)

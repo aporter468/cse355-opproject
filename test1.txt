@@ -10,4 +10,5 @@ b
 % Initial state
 1
 % Final states
-3
+1
+2
