@@ -92,7 +92,7 @@ public class FiniteAutomata
         {
             System.out.println("Queue: "+stateQueue.toString());
             State currentState = stateQueue.get(0);
-             System.out.println("current: "+currentState.toString());
+            System.out.println("current: "+currentState.toString());
             for(int i = 0; i<alphabet.size(); i++)
             {
                 ArrayList<State> toStatesList = getToStatesList(currentState,alphabet.get(i));
@@ -111,60 +111,82 @@ public class FiniteAutomata
                     }
 
                     //determine if combination of states is new; connect to existing state for that set of states or create
-                   
-                        if(existingIndex>-1)
-                        {
-                            //connect to existin
-                            System.out.println("connection to existing.");
-                            currentState.addTransition(alphabet.get(i),newStatesList.get(existingIndex));
-                        }
-                        else
-                        {
-                            System.out.println("adding combostate for: "+toStatesList.toString());
-                            State newComboState = new State(newStatesList.size(),alphabet,false,false);
-                            newComboState.setPrevStatesCombined(toStatesList);
-                            currentState.addTransition(alphabet.get(i),newComboState);
-                            stateQueue.add(newComboState);
-                            newStatesList.add(newComboState);
-                        }
-                    
-                 
+
+                    if(existingIndex>-1)
+                    {
+                        //connect to existin
+                        System.out.println("connection to existing.");
+                        currentState.addTransition(alphabet.get(i),newStatesList.get(existingIndex));
+                    }
+                    else
+                    {
+                        System.out.println("adding combostate for: "+toStatesList.toString());
+                        State newComboState = new State(newStatesList.size(),alphabet,false,false);
+                        newComboState.setPrevStatesCombined(toStatesList);
+
+                        currentState.addTransition(alphabet.get(i),newComboState);
+                        stateQueue.add(newComboState);
+                        newStatesList.add(newComboState);
+                    }
 
                 }
             }
-                stateQueue.remove(0);//pop off FIFO queue
-
-            }
-            //map to actual vals for this FA
-             states = new State[100];
-             finalStates = new ArrayList<String>();
-             System.out.println("result: \n");
-             for(int i =0;i<newStatesList.size();i++)
-             {
-                 State newStatei = newStatesList.get(i);
-                 System.out.println(newStatei.getIndex()+"from "+newStatei.getPrevStatesCombined()+" "+newStatei.getTransitionsOn("a")+" "+newStatei.getTransitionsOn("b"));
-                 states[newStatei.getIndex()] = newStatei;
-                 if(newStatei.getAccept())
-                 {
-                     finalStates.add(newStatei.getIndex()+"");
-                  }
-                  if(newStatei.getStart())
-                  {
-                  initState = newStatei.getIndex()+"";
-                }
-             }
+            stateQueue.remove(0);//pop off FIFO queue
 
         }
-        private ArrayList<State> getToStatesList(State start, String alph)
+        //map to actual vals for this FA
+        states = new State[100];
+        finalStates = new ArrayList<String>();
+        System.out.println("\nresult: ");
+        for(int i =0;i<newStatesList.size();i++)
         {
+            State newStatei = newStatesList.get(i);
+            System.out.println(newStatei.getIndex()+"from "+newStatei.getPrevStatesCombined()+" "+newStatei.getTransitionsOn("a")+" "+newStatei.getTransitionsOn("b"));
+            states[newStatei.getIndex()] = newStatei;
+            for(int k = 0; k<newStatesList.get(i).getPrevStatesCombined().size();k++)
+            {
+                if(newStatesList.get(i).getPrevStatesCombined().get(k).getAccept())
+                {
+                    newStatesList.get(i).setAccept(true);
+
+                }
+            }
+            if(newStatesList.get(i).getAccept())
+            {
+                finalStates.add(newStatesList.get(i).getIndex()+"");
+            }
+            if(newStatei.getStart())
+            {
+                initState = newStatei.getIndex()+"";
+
+            }
+        }
+        System.out.println("init state: "+initState);
+        System.out.println("final states: ");
+        for(int i =0; i<finalStates.size();i++)
+        {
+            System.out.println(finalStates.get(i));
+        }
+
+    }
+
+    private ArrayList<State> getToStatesList(State start, String alph)
+    {
         ArrayList<State> toStates = new ArrayList<State>();
+        ArrayList<Integer> usedIndices = new ArrayList<Integer>();
         for(int i =0; i<start.getPrevStatesCombined().size(); i++)
         {
             ArrayList<State> temp = start.getPrevStatesCombined().get(i).getTransitionsOn(alph);
             for(int j = 0; j<temp.size(); j++)
-                toStates.add(temp.get(j));
-                
-         
+            {
+                int index = temp.get(j).getIndex();
+                if(usedIndices.indexOf(index)==-1)
+                {
+                    toStates.add(temp.get(j));
+                    usedIndices.add(index);
+                }
+            }
+
         }
         return toStates;
 
@@ -180,12 +202,51 @@ public class FiniteAutomata
                 states[i].setAccept(!isAccept);
             }
         }
+        for(int i =0;i<100; i++)
+        {
+
+            if(states[i]!=null)
+            {
+                System.out.println(states[i].toString()+" "+states[i].getAccept());
+            }
+        }
 
     }
 
-    public String findAcceptedString()//do this recursively
+    public String findAcceptedString()
     {
-        return "";
+        State currentState = states[Integer.parseInt(initState)];
+        String w = "";
+        w = buildAcceptedString(currentState,w);
+        return w;
+    }
+
+    private String buildAcceptedString(State s,String w)
+    {
+        if(s.getAccept())
+        {
+            if(w.length() == 0)
+                return "epsilon";
+            else
+                return w;
+        }     
+        else
+        {
+            for(int i =0; i<alphabet.size();i++)
+            {
+                ArrayList<State> nextStates = s.getTransitionsOn(alphabet.get(i));
+                if(nextStates.size()>0)
+                {
+                    for(int j = 0;j<1;j++)
+                    {
+                        w = buildAcceptedString(nextStates.get(j),alphabet.get(i)+w);
+                        if(w.length()>0)
+                            return w;
+                    }
+                }
+            }
+            return w;
+        }
     }
 
     public void makeIntersection(FiniteAutomata FA2)

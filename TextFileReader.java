@@ -21,7 +21,7 @@ public class TextFileReader
     private FiniteAutomata sysFA;
     public static void main(String args[])
     {
-        TextFileReader tfr = new TextFileReader("test2");
+        TextFileReader tfr = new TextFileReader("exmp01_M2");
     }
     public TextFileReader(String fileName)
     {
@@ -98,6 +98,8 @@ public class TextFileReader
         }
     FA = new FiniteAutomata(alphabet,initState,finalStates,transitions);
     FA.convertToDFA();
+    FA.convertToComplement();
+    System.out.println(FA.findAcceptedString());
     }
 
 
