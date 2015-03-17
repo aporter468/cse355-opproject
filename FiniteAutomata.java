@@ -13,6 +13,7 @@ public class FiniteAutomata
     private ArrayList<String> finalStates;
     private ArrayList<String> transitionsList;
     private State[] states;
+    private ArrayList<State> statesList;
     private int numStates;
     private boolean stringFound = false;
     public FiniteAutomata(ArrayList<String> alphabet,String initState, ArrayList<String>finalStates, ArrayList<String> transitionsList)
@@ -23,7 +24,7 @@ public class FiniteAutomata
         this.transitionsList = transitionsList;
         int numStates = 0;
         states = new State[100];//max specified is 100. need array to have access by index from init.
-
+        statesList = new ArrayList<State>();
         construct();
     }
 
@@ -39,13 +40,14 @@ public class FiniteAutomata
             if(states[start]==null)
             {
                 states[start] = new State(start,alphabet,false,false);
-
+                statesList.add(states[start]);
                 System.out.println("start: "+start+" constructed");
 
             }
             if(states[end] == null)
             {
                 states[end] = new State(end,alphabet,false,false);
+                statesList.add(states[end]);
                 System.out.println("end: "+end+" constructed");
             }
         }
@@ -137,6 +139,7 @@ public class FiniteAutomata
         //map to actual vals for this FA
         states = new State[100];
         finalStates = new ArrayList<String>();
+        statesList = newStatesList;
         System.out.println("\nresult: ");
         for(int i =0;i<newStatesList.size();i++)
         {
@@ -194,20 +197,19 @@ public class FiniteAutomata
 
     public void convertToComplement()
     {
-        for(int i = 0; i<100; i++)
+      
+        for(int i =0; i<statesList.size(); i++)
         {
-            if(states[i]!=null)
-            {
-                boolean isAccept = states[i].getAccept();
-                states[i].setAccept(!isAccept);
-            }
+           boolean isAccept = statesList.get(i).getAccept();
+           statesList.get(i).setAccept(!isAccept);
         }
-        for(int i =0;i<100; i++)
+        
+        System.out.println("New accept values: ");
+         for(int i =0; i<statesList.size(); i++)
         {
-
             if(states[i]!=null)
             {
-                System.out.println(states[i].toString()+" "+states[i].getAccept());
+                System.out.println(statesList.get(i).toString()+" "+statesList.get(i).getAccept());
             }
         }
 
