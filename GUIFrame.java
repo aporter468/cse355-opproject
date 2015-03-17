@@ -72,7 +72,13 @@ public class GUIFrame
                     System.exit(0);
                 }
             });
+frame.addComponentListener(new ComponentAdapter() {
+                public void componentResized(ComponentEvent e)
+                {
+                   modelPanel.myGame.setPanelSize(modelPanel.getWidth(), modelPanel.getHeight());
 
+                }
+            });
     }
 
     public static void main(String args[])
