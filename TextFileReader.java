@@ -32,16 +32,18 @@ public class TextFileReader
 
             fileIn.nextLine();
             ArrayList<String> alphabet = readAlphabet();
-            System.out.println(alphabet.toString());
+            System.out.println("Alphabet read: "+alphabet.toString());
             String nextSection = fileIn.next();
             if(nextSection.equals("Specification"))
             {
+                System.out.println("Read specification automaton:");
                 fileIn.nextLine();
                 fileIn.nextLine();
                 readAutomata(alphabet,specFA);
             }
             if(fileIn.hasNextLine())
             {
+                System.out.println("Read system automaton: "); 
                 String nextLine = fileIn.nextLine();
 
                 if(nextLine.startsWith("%"))
@@ -99,7 +101,7 @@ public class TextFileReader
     FA = new FiniteAutomata(alphabet,initState,finalStates,transitions);
     FA.convertToDFA();
     FA.convertToComplement();
-    System.out.println(FA.findAcceptedString());
+    System.out.println("String accepted by L(D'): "+FA.findAcceptedString(100));
     }
 
 

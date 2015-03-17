@@ -22,11 +22,12 @@ public class State
         this.isAccept = isAccept;
         prevStatesCombined = new ArrayList<State>();
     }
-
+/**
+ * Generates an ArrayList of states reached on input string a
+ */
     public ArrayList<State> getTransitionsOn(String a)
     {
         //find indices of a in transOn, return list of corresponding states
-
         ArrayList<State> transOnA = new ArrayList<State>();
         for(int i =0; i<transTo.size(); i++)
         {
@@ -40,7 +41,9 @@ public class State
 
 
     }
-
+/**
+ * same process as getTransitionsOn but generates list of integer indices.
+ */
 
     public ArrayList<Integer> getIndicesTransitionsOn(String a)
     {
@@ -56,7 +59,9 @@ public class State
         return transOnA;
 
     }
-
+/**
+ * Returns first state reached on input string a
+ */
     public State getFirstTransitionOn(String a)
     {
         //return first transition on a; will be only if is DfA...
@@ -64,7 +69,9 @@ public class State
         if(indexOfa>-1) return transTo.get(indexOfa);
         return null;
     }
-
+/**
+ * construct transition by adding state to list if not already existing
+ */
     public void addTransition(String a, State toState)
     {
         //check if a is in trans on and toState = correspoinding transTo, else add to end
@@ -77,10 +84,11 @@ public class State
         {
             transTo.add(toState);
             transOn.add(a);
-            System.out.println("trans from:" +index+" to "+toState.toString()+" on "+a);
         }
     }
-
+/**
+ * checks if the states combined (from FA before conversion) is a match to prevent duplication
+ */
     public boolean matchesStatesCombined(ArrayList<State> otherStatesList)//assumes in order
     {
         //TODO: match checking, even if out of order?
@@ -93,12 +101,12 @@ public class State
         return true;
     }
 
-    //getters and setters
+
     public String toString()
     {
         return "State: "+index;
     }
-
+    //getters and setters
     public void setPrevStatesCombined(ArrayList<State> psc){  prevStatesCombined = psc; }
 
     public ArrayList<State> getPrevStatesCombined(){ return prevStatesCombined;}
