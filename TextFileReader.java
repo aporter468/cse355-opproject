@@ -17,18 +17,24 @@ public class TextFileReader
 {
     private String fileName;
     private Scanner fileIn;
-    private FiniteAutomata specFA;
-    private FiniteAutomata sysFA;
+    private FiniteAutomaton specFA;
+    private FiniteAutomaton sysFA;
     public static void main(String args[])
     {
-        TextFileReader tfr = new TextFileReader("exmp01_M2");
+         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Enter filename with extension (ie example.txt):\n");
+        String fileName = "";
+        try{
+         fileName = br.readLine();}
+        catch(Exception e){}
+        TextFileReader tfr = new TextFileReader(fileName);
     }
     public TextFileReader(String fileName)
     {
         this.fileName = fileName;
         try
         {
-            fileIn = new Scanner (new File(fileName +".txt"));
+            fileIn = new Scanner (new File(fileName));
 
             fileIn.nextLine();
             ArrayList<String> alphabet = readAlphabet();
@@ -73,7 +79,7 @@ public class TextFileReader
 
     }
 
-    private void readAutomata(ArrayList<String> alphabet, FiniteAutomata FA)
+    private void readAutomata(ArrayList<String> alphabet, FiniteAutomaton FA)
     {
 
 
@@ -98,7 +104,7 @@ public class TextFileReader
                 break;
 
         }
-    FA = new FiniteAutomata(alphabet,initState,finalStates,transitions);
+    FA = new FiniteAutomaton(alphabet,initState,finalStates,transitions);
     FA.convertToDFA();
     FA.convertToComplement();
     System.out.println("String accepted by L(D'): "+FA.findAcceptedString(100));

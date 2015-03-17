@@ -6,5 +6,5 @@ comment1.target=TextFileReader(java.lang.String)
 comment2.params=
 comment2.target=java.util.ArrayList\ readAlphabet()
 comment3.params=alphabet\ FA
-comment3.target=void\ readAutomata(java.util.ArrayList,\ FiniteAutomata)
+comment3.target=void\ readAutomata(java.util.ArrayList,\ FiniteAutomaton)
 numComments=4

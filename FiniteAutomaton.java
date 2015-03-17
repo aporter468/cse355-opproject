@@ -4,7 +4,7 @@ import java.util.*;
  * 
  * @author Alex Porter
  */
-public class FiniteAutomata
+public class FiniteAutomaton
 {
     private boolean deterministic;
 
@@ -17,7 +17,7 @@ public class FiniteAutomata
     private ArrayList<State> statesList;
     private int numStates;
     private boolean stringFound = false;
-    public FiniteAutomata(ArrayList<String> alphabet,String initStateName, ArrayList<String>finalStates, ArrayList<String> transitionsList)
+    public FiniteAutomaton(ArrayList<String> alphabet,String initStateName, ArrayList<String>finalStates, ArrayList<String> transitionsList)
     {
         this.alphabet = alphabet;
         this.initStateName =initStateName;
@@ -276,7 +276,7 @@ public class FiniteAutomata
 
     }
 
-    public void makeIntersection(FiniteAutomata FA2)
+    public void makeIntersection(FiniteAutomaton FA2)
     {
     }
 

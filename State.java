@@ -22,9 +22,10 @@ public class State
         this.isAccept = isAccept;
         prevStatesCombined = new ArrayList<State>();
     }
-/**
- * Generates an ArrayList of states reached on input string a
- */
+
+    /**
+     * Generates an ArrayList of states reached on input string a
+     */
     public ArrayList<State> getTransitionsOn(String a)
     {
         //find indices of a in transOn, return list of corresponding states
@@ -36,14 +37,13 @@ public class State
                 transOnA.add(transTo.get(i));
             }
         }
-                sortStatesList(transOnA);
+        sortStatesList(transOnA);
         return transOnA;
 
-
     }
-/**
- * same process as getTransitionsOn but generates list of integer indices.
- */
+    /**
+     * same process as getTransitionsOn but generates list of integer indices.
+     */
 
     public ArrayList<Integer> getIndicesTransitionsOn(String a)
     {
@@ -59,9 +59,10 @@ public class State
         return transOnA;
 
     }
-/**
- * Returns first state reached on input string a
- */
+
+    /**
+     * Returns first state reached on input string a
+     */
     public State getFirstTransitionOn(String a)
     {
         //return first transition on a; will be only if is DfA...
@@ -69,9 +70,10 @@ public class State
         if(indexOfa>-1) return transTo.get(indexOfa);
         return null;
     }
-/**
- * construct transition by adding state to list if not already existing
- */
+
+    /**
+     * construct transition by adding state to list if not already existing
+     */
     public void addTransition(String a, State toState)
     {
         //check if a is in trans on and toState = correspoinding transTo, else add to end
@@ -86,9 +88,10 @@ public class State
             transOn.add(a);
         }
     }
-/**
- * checks if the states combined (from FA before conversion) is a match to prevent duplication
- */
+
+    /**
+     * checks if the states combined (from FA before conversion) is a match to prevent duplication
+     */
     public boolean matchesStatesCombined(ArrayList<State> otherStatesList)//assumes in order
     {
         //TODO: match checking, even if out of order?
@@ -100,7 +103,6 @@ public class State
         }
         return true;
     }
-
 
     public String toString()
     {
@@ -125,6 +127,5 @@ public class State
     {
         return list;
     }
-    
 
 }

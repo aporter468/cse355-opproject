@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.params=alphabet\ initStateName\ finalStates\ transitionsList
-comment0.target=FiniteAutomata(java.util.ArrayList,\ java.lang.String,\ java.util.ArrayList,\ java.util.ArrayList)
+comment0.target=FiniteAutomaton(java.util.ArrayList,\ java.lang.String,\ java.util.ArrayList,\ java.util.ArrayList)
 comment1.params=
 comment1.target=void\ construct()
 comment1.text=\n\ construct\ builds\ the\ FA\ from\ the\ transitions\ list,\ adding\ states\ as\ they\ are\ used\n
@@ -22,5 +22,5 @@ comment7.params=s\ w\ maxLength
 comment7.target=java.lang.String\ buildAcceptedString(State,\ java.lang.String,\ int)
 comment7.text=\n\ build\ string\ recursively,\ favoring\ transitioning\ to\ new\ states\ over\ current,\ but\ could\ find\ loops,\ so\ maxes\ out\n\ @return\ acceptedString\n
 comment8.params=FA2
-comment8.target=void\ makeIntersection(FiniteAutomata)
+comment8.target=void\ makeIntersection(FiniteAutomaton)
 numComments=9
