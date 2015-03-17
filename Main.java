@@ -13,7 +13,7 @@ import java.util.*;
  * 
  * @author Alex Porter
  */
-public class TextFileReader
+public class Main
 {
     private String fileName;
     private Scanner fileIn;
@@ -21,16 +21,31 @@ public class TextFileReader
     private FiniteAutomaton sysFA;
     public static void main(String args[])
     {
-         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("Enter filename with extension (ie example.txt):\n");
         String fileName = "";
         try{
-         fileName = br.readLine();}
+            fileName = br.readLine();}
         catch(Exception e){}
-        TextFileReader tfr = new TextFileReader(fileName);
-        
+        Main mainReader = new Main(fileName);
+        System.out.println("Load another file? (y/n) ");
+        try{
+            String input = br.readLine();
+            while(!input.equals("n"))
+            {
+                System.out.print("Enter filename with extension (ie example.txt):\n");
+                fileName = "";
+                fileName = br.readLine(); 
+                Main mainReader1 = new Main(fileName);
+                        System.out.println("Load another file? (y/n) ");
+                        input = br.readLine();
+            }
+
+        }  catch(Exception e){}
+        System.out.println("program finished.");
     }
-    public TextFileReader(String fileName)
+
+    public Main(String fileName)
     {
         this.fileName = fileName;
         try
@@ -83,7 +98,6 @@ public class TextFileReader
     private void readAutomata(ArrayList<String> alphabet, FiniteAutomaton FA)
     {
 
-
         String  transitionLine = fileIn.nextLine();
         ArrayList<String> transitions = new ArrayList<String>();
         while(!transitionLine.startsWith("%"))
@@ -93,7 +107,7 @@ public class TextFileReader
         }
         String initState = fileIn.nextLine();
         fileIn.nextLine();//junk for final...
-         ArrayList<String> finalStates = new ArrayList<String>();
+        ArrayList<String> finalStates = new ArrayList<String>();
         String finalStateLine = fileIn.nextLine();
 
         while(!finalStateLine.startsWith("%") )
@@ -105,11 +119,10 @@ public class TextFileReader
                 break;
 
         }
-    FA = new FiniteAutomaton(alphabet,initState,finalStates,transitions);
-    FA.convertToDFA();
-    FA.convertToComplement();
-    System.out.println("String accepted by L(D'): "+FA.findAcceptedString(100));
+        FA = new FiniteAutomaton(alphabet,initState,finalStates,transitions);
+        FA.convertToDFA();
+        FA.convertToComplement();
+        System.out.println("String accepted by L(D'): "+FA.findAcceptedString(100));
     }
-
 
 }

@@ -2,7 +2,7 @@
 comment0.params=args
 comment0.target=void\ main(java.lang.String[])
 comment1.params=fileName
-comment1.target=TextFileReader(java.lang.String)
+comment1.target=Main(java.lang.String)
 comment2.params=
 comment2.target=java.util.ArrayList\ readAlphabet()
 comment3.params=alphabet\ FA

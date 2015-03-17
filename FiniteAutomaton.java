@@ -26,8 +26,8 @@ public class FiniteAutomaton
         int numStates = 0;
         states = new State[100];//max specified is 100. need array to have access by index from init.
         statesList = new ArrayList<State>();
-            System.out.println("Start state: "+initStateName);
-            System.out.println("Accept states: "+finalStates);
+        System.out.println("Start state: "+initStateName);
+        System.out.println("Accept states: "+finalStates);
         construct();
     }
 
@@ -134,7 +134,7 @@ public class FiniteAutomaton
             stateQueue.remove(0);//pop off FIFO queue
 
         }
-        
+
         //Set the states for this FA class to the new ones created
         states = new State[100];
         finalStates = new ArrayList<String>();
@@ -160,25 +160,30 @@ public class FiniteAutomaton
             }
         }
 
-      System.out.println("Converted to DFA:" + newStatesList.size()+" states.");
+        System.out.println("Converted to DFA: " + newStatesList.size()+" states:");
+        printFA();
 
     }
+
     private void printFA()
     {
-                System.out.println("\nFA: ");
+        System.out.println("DFA: ");
         for(int i =0; i<statesList.size();i++)
         {
             State current = statesList.get(i);
-                        System.out.println("Index: "+current.getIndex()+"combined prev : "+current.getPrevStatesCombined()+" ");
-                        System.out.println("transition on : a "+current.getTransitionsOn("a")+" b "+current.getTransitionsOn("b"));
+            System.out.println("Index: "+current.getIndex()+"combined prev : "+current.getPrevStatesCombined()+" ");
+            for(int j = 0; j<alphabet.size();j++)
+            {
+                System.out.println("On "+alphabet.get(j)+" : "+current.getTransitionsOn(alphabet.get(j)));
+            }
         }
     }
-    
-/**
- * getToStatesList combines all the toStates for the prev states combined in the current state (such as {1,2})
- * @return toStatesList
- */
-   private ArrayList<State> getToStatesList(State start, String alph)
+
+    /**
+     * getToStatesList combines all the toStates for the prev states combined in the current state (such as {1,2})
+     * @return toStatesList
+     */
+    private ArrayList<State> getToStatesList(State start, String alph)
     {
         ArrayList<State> toStates = new ArrayList<State>();
         ArrayList<Integer> usedIndices = new ArrayList<Integer>();
@@ -199,26 +204,26 @@ public class FiniteAutomaton
         return toStates;
 
     }
-/**
- * Inverte the isAccept boolean for each state in the machine
- */
+
+    /**
+     * Inverte the isAccept boolean for each state in the machine
+     */
     public void convertToComplement()
     {
-      
+
         for(int i =0; i<statesList.size(); i++)
         {
-           boolean isAccept = statesList.get(i).getAccept();
-           statesList.get(i).setAccept(!isAccept);
+            boolean isAccept = statesList.get(i).getAccept();
+            statesList.get(i).setAccept(!isAccept);
         }
-        
+
         System.out.println("Accept states after complement: "+finalStates);
-       
 
     }
-/**
- * interface method for generating an accept string, within maximum length given
- * calls recursive buildAcceptedString method
- */
+    /**
+     * interface method for generating an accept string, within maximum length given
+     * calls recursive buildAcceptedString method
+     */
     public String findAcceptedString(int maxLength)
     {
         State currentState = initState;
@@ -227,10 +232,11 @@ public class FiniteAutomaton
         w = buildAcceptedString(currentState,w, maxLength);
         return w;
     }
-/**
- * build string recursively, favoring transitioning to new states over current, but could find loops, so maxes out
- * @return acceptedString
- */
+
+    /**
+     * build string recursively, favoring transitioning to new states over current, but could find loops, so maxes out
+     * @return acceptedString
+     */
     private String buildAcceptedString(State s,String w, int maxLength)
     {
         if(s.getAccept() )

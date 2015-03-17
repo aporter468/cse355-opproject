@@ -106,7 +106,7 @@ public class State
 
     public String toString()
     {
-        return "State: "+index;
+        return ""+index;
     }
     //getters and setters
     public void setPrevStatesCombined(ArrayList<State> psc){  prevStatesCombined = psc; }
