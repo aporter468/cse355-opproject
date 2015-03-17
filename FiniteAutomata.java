@@ -9,17 +9,18 @@ public class FiniteAutomata
     private boolean deterministic;
 
     private ArrayList<String> alphabet;
-    private String initState;
+    private String initStateName;
+    private State initState;
     private ArrayList<String> finalStates;
     private ArrayList<String> transitionsList;
     private State[] states;
     private ArrayList<State> statesList;
     private int numStates;
     private boolean stringFound = false;
-    public FiniteAutomata(ArrayList<String> alphabet,String initState, ArrayList<String>finalStates, ArrayList<String> transitionsList)
+    public FiniteAutomata(ArrayList<String> alphabet,String initStateName, ArrayList<String>finalStates, ArrayList<String> transitionsList)
     {
         this.alphabet = alphabet;
-        this.initState =initState;
+        this.initStateName =initStateName;
         this.finalStates =finalStates;
         this.transitionsList = transitionsList;
         int numStates = 0;
@@ -52,8 +53,9 @@ public class FiniteAutomata
             }
         }
         //set initial, accept states
-        int startIndex = Integer.parseInt(initState);
+        int startIndex = Integer.parseInt(initStateName);
         states[startIndex].setStart(true);
+        initState = states[startIndex];
         for(int i =0; i<finalStates.size(); i++)
         {
             int stateIndex = Integer.parseInt(finalStates.get(i));
@@ -85,9 +87,10 @@ public class FiniteAutomata
         //first combined state is just initial; push new init onto queue, add to newStatesList
         State newInitState = new State(0,alphabet,true,false);
         ArrayList<State> initPrevStates = new ArrayList<State>();
-        initPrevStates.add(states[Integer.parseInt(initState)]);
+        initPrevStates.add(initState);
         newInitState.setPrevStatesCombined(initPrevStates);
-        System.out.println("queue starting with: "+initState);
+        initState = newInitState;
+        System.out.println("queue starting with: "+initState.toString());
         stateQueue.add(newInitState);
         newStatesList.add(newInitState);
         while(stateQueue.size()>0)
@@ -160,7 +163,7 @@ public class FiniteAutomata
             }
             if(newStatei.getStart())
             {
-                initState = newStatei.getIndex()+"";
+                initStateName = newStatei.getIndex()+"";
 
             }
         }
@@ -217,7 +220,7 @@ public class FiniteAutomata
 
     public String findAcceptedString()
     {
-        State currentState = states[Integer.parseInt(initState)];
+        State currentState = initState;
         String w = "";
 
         w = buildAcceptedString(currentState,w);
