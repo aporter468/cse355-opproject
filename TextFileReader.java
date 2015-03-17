@@ -28,6 +28,7 @@ public class TextFileReader
          fileName = br.readLine();}
         catch(Exception e){}
         TextFileReader tfr = new TextFileReader(fileName);
+        
     }
     public TextFileReader(String fileName)
     {
