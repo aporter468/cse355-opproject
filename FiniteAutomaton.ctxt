@@ -1,5 +1,5 @@
 #BlueJ class context
-comment0.params=alphabet\ initStateName\ finalStates\ transitionsList
+comment0.params=alphabet\ initStateName\ acceptStates\ transitionsList
 comment0.target=FiniteAutomaton(java.util.ArrayList,\ java.lang.String,\ java.util.ArrayList,\ java.util.ArrayList)
 comment1.params=
 comment1.target=void\ construct()
@@ -18,8 +18,8 @@ comment5.text=\n\ Inverte\ the\ isAccept\ boolean\ for\ each\ state\ in\ the\ ma
 comment6.params=maxLength
 comment6.target=java.lang.String\ findAcceptedString(int)
 comment6.text=\n\ interface\ method\ for\ generating\ an\ accept\ string,\ within\ maximum\ length\ given\n\ calls\ recursive\ buildAcceptedString\ method\n
-comment7.params=s\ w\ maxLength
-comment7.target=java.lang.String\ buildAcceptedString(State,\ java.lang.String,\ int)
+comment7.params=s\ w
+comment7.target=java.lang.String\ buildAcceptedString(State,\ java.lang.String)
 comment7.text=\n\ build\ string\ recursively,\ favoring\ transitioning\ to\ new\ states\ over\ current,\ but\ could\ find\ loops,\ so\ maxes\ out\n\ @return\ acceptedString\n
 comment8.params=FA2
 comment8.target=void\ makeIntersection(FiniteAutomaton)

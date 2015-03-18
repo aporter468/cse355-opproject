@@ -37,8 +37,8 @@ public class Main
                 fileName = "";
                 fileName = br.readLine(); 
                 Main mainReader1 = new Main(fileName);
-                        System.out.println("Load another file? (y/n) ");
-                        input = br.readLine();
+                System.out.println("Load another file? (y/n) ");
+                input = br.readLine();
             }
 
         }  catch(Exception e){}
@@ -108,16 +108,19 @@ public class Main
         String initState = fileIn.nextLine();
         fileIn.nextLine();//junk for final...
         ArrayList<String> finalStates = new ArrayList<String>();
-        String finalStateLine = fileIn.nextLine();
-
-        while(!finalStateLine.startsWith("%") )
+        if(fileIn.hasNext())
         {
-            finalStates.add(finalStateLine);
-            if(fileIn.hasNext())
-                finalStateLine = fileIn.nextLine();
-            else
-                break;
+            String finalStateLine = fileIn.nextLine();
 
+            while(!finalStateLine.startsWith("%") )
+            {
+                finalStates.add(finalStateLine);
+                if(fileIn.hasNext())
+                    finalStateLine = fileIn.nextLine();
+                else
+                    break;
+
+            }
         }
         FA = new FiniteAutomaton(alphabet,initState,finalStates,transitions);
         FA.convertToDFA();

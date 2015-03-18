@@ -11,23 +11,24 @@ public class FiniteAutomaton
     private ArrayList<String> alphabet;
     private String initStateName;
     private State initState;
-    private ArrayList<String> finalStates;
+    private ArrayList<String> acceptStates;
     private ArrayList<String> transitionsList;
     private State[] states;
     private ArrayList<State> statesList;
     private int numStates;
     private boolean stringFound = false;
-    public FiniteAutomaton(ArrayList<String> alphabet,String initStateName, ArrayList<String>finalStates, ArrayList<String> transitionsList)
+    private ArrayList<String> visitedStates;
+    public FiniteAutomaton(ArrayList<String> alphabet,String initStateName, ArrayList<String>acceptStates, ArrayList<String> transitionsList)
     {
         this.alphabet = alphabet;
         this.initStateName =initStateName;
-        this.finalStates =finalStates;
+        this.acceptStates =acceptStates;
         this.transitionsList = transitionsList;
         int numStates = 0;
         states = new State[100];//max specified is 100. need array to have access by index from init.
         statesList = new ArrayList<State>();
         System.out.println("Start state: "+initStateName);
-        System.out.println("Accept states: "+finalStates);
+        System.out.println("Accept states: "+acceptStates);
         construct();
     }
 
@@ -59,9 +60,9 @@ public class FiniteAutomaton
         int startIndex = Integer.parseInt(initStateName);
         states[startIndex].setStart(true);
         initState = states[startIndex];
-        for(int i =0; i<finalStates.size(); i++)
+        for(int i =0; i<acceptStates.size(); i++)
         {
-            int stateIndex = Integer.parseInt(finalStates.get(i));
+            int stateIndex = Integer.parseInt(acceptStates.get(i));
             states[stateIndex].setAccept(true);
         }
         //loop over transitions to add transitions to existing states
@@ -137,7 +138,7 @@ public class FiniteAutomaton
 
         //Set the states for this FA class to the new ones created
         states = new State[100];
-        finalStates = new ArrayList<String>();
+        acceptStates = new ArrayList<String>();
         statesList = newStatesList;
         for(int i =0;i<newStatesList.size();i++)
         {
@@ -152,7 +153,7 @@ public class FiniteAutomaton
             }
             if(newStatesList.get(i).getAccept())
             {
-                finalStates.add(newStatesList.get(i).getIndex()+"");
+                acceptStates.add(newStatesList.get(i).getIndex()+"");
             }
             if(newStatei.getStart())
             {
@@ -171,12 +172,13 @@ public class FiniteAutomaton
         for(int i =0; i<statesList.size();i++)
         {
             State current = statesList.get(i);
-            System.out.println("Index: "+current.getIndex()+"combined prev : "+current.getPrevStatesCombined()+" ");
+            System.out.println("Index: "+current.getIndex()+" combined from originals: "+current.getPrevStatesCombined()+" ");
             for(int j = 0; j<alphabet.size();j++)
             {
                 System.out.println("On "+alphabet.get(j)+" : "+current.getTransitionsOn(alphabet.get(j)));
             }
         }
+        System.out.println("Accept states: "+acceptStates);
     }
 
     /**
@@ -211,15 +213,22 @@ public class FiniteAutomaton
     public void convertToComplement()
     {
 
+        acceptStates = new ArrayList<String>();
         for(int i =0; i<statesList.size(); i++)
         {
             boolean isAccept = statesList.get(i).getAccept();
             statesList.get(i).setAccept(!isAccept);
+            if(statesList.get(i).getAccept())
+            {
+                acceptStates.add(statesList.get(i).toString());
+            }
+
         }
 
-        System.out.println("Accept states after complement: "+finalStates);
+        System.out.println("Accept states after complement: "+acceptStates);
 
     }
+
     /**
      * interface method for generating an accept string, within maximum length given
      * calls recursive buildAcceptedString method
@@ -228,8 +237,10 @@ public class FiniteAutomaton
     {
         State currentState = initState;
         String w = "";
-
-        w = buildAcceptedString(currentState,w, maxLength);
+        if(acceptStates.size()==0) //since the DFA is constructed by exploration, all states that are accepted and included here are reachable
+        return "no string";
+        
+        w = buildAcceptedString(currentState,w);
         return w;
     }
 
@@ -237,36 +248,37 @@ public class FiniteAutomaton
      * build string recursively, favoring transitioning to new states over current, but could find loops, so maxes out
      * @return acceptedString
      */
-    private String buildAcceptedString(State s,String w, int maxLength)
+    private String buildAcceptedString(State s,String w)
     {
+
         if(s.getAccept() )
         {
+
             stringFound = true;
             if(w.length()==0)
             {
-                return "(epsilon)";
+                return "epsilon";
             }
             return "";
 
         } 
-        else if (w.length()>maxLength)
-        {
-            return "nostring";
-        }
+
         else
         {
             for(int i =0; i<alphabet.size();i++)
             {
                 ArrayList<State> nextStates = s.getTransitionsOn(alphabet.get(i));
                 String attempt = "";
+
                 for(int j = 0;j<nextStates.size();j++)
                 {
+
                     if(nextStates.get(j).getIndex()!= s.getIndex())
                     {
-                        String next = buildAcceptedString(nextStates.get(j),w+alphabet.get(i),maxLength);
-                        if(next.equals("nostring"))
+                        String next = buildAcceptedString(nextStates.get(j),w+alphabet.get(i));
+                        if(next.equals("no string"))
                         {
-                            attempt = "nostring";
+                            attempt = "no string";
                         }
                         else
                         {
@@ -276,7 +288,7 @@ public class FiniteAutomaton
                 }
 
             }
-            return "nostring";
+            return "no string";
 
         }
 
