@@ -250,7 +250,7 @@ public class FiniteAutomaton
      */
     private String buildAcceptedString(State s,String w)
     {
-
+        if(w.length()>100) return "too long";
         if(s.getAccept() )
         {
 
@@ -297,5 +297,106 @@ public class FiniteAutomaton
     public void makeIntersection(FiniteAutomaton FA2)
     {
     }
+    public void makeUnionWith(FiniteAutomaton FA2)
+    {
+        //make NFA union construction
+        //first, re-index FA2
+        ArrayList<State> FA2States = FA2.getStatesList();
+        int startIndex = statesList.size();//own # states
+        for(int i =0; i<FA2States.size();i++)
+        {
+            FA2States.get(i).setIndex(i+startIndex);
+        }
+        State newStartState = new State(0,alphabet,true,false);
+       
+        ArrayList<State> stateQueue = new ArrayList<State>();//FIFO queue for adding states as they are used
+        ArrayList<State> newStatesList = new ArrayList<State>();
 
+        //first combined state is just initial; push new init onto queue, add to newStatesList
+        State newInitState = new State(0,alphabet,true,false);
+        ArrayList<State> initPrevStates = new ArrayList<State>();
+        initPrevStates.add(initState);
+        initPrevStates.add(FA2.getInitState());
+        newInitState.setPrevStatesCombined(initPrevStates);
+        initState = newInitState;
+        stateQueue.add(newInitState);
+        newStatesList.add(newInitState);
+        while(stateQueue.size()>0)
+        {
+            State currentState = stateQueue.get(0);
+            for(int i = 0; i<alphabet.size(); i++)
+            {
+                ArrayList<State> toStatesList = getToStatesList(currentState,alphabet.get(i));
+                if(toStatesList.size()>0)
+                {
+
+                    //check toStates list against existing combo states in new States list
+                    int existingIndex = -1;
+                    for(int j  =0; j<newStatesList.size(); j++)
+                    {
+                        if( newStatesList.get(j).matchesStatesCombined(toStatesList))
+                        {
+                            existingIndex = j;
+                        }
+                    }
+
+                    //determine if combination of states is new; connect to existing state for that set of states or create
+                    if(existingIndex>-1)
+                    {
+                        //connect to existin
+                        currentState.addTransition(alphabet.get(i),newStatesList.get(existingIndex));
+                    }
+                    else
+                    {
+                        State newComboState = new State(newStatesList.size(),alphabet,false,false);
+                        newComboState.setPrevStatesCombined(toStatesList);
+
+                        currentState.addTransition(alphabet.get(i),newComboState);
+                        stateQueue.add(newComboState);
+                        newStatesList.add(newComboState);
+                    }
+
+                }
+            }
+            stateQueue.remove(0);//pop off FIFO queue
+
+        }
+
+        //Set the states for this FA class to the new ones created
+        states = new State[100];
+        acceptStates = new ArrayList<String>();
+        statesList = newStatesList;
+        for(int i =0;i<newStatesList.size();i++)
+        {
+            State newStatei = newStatesList.get(i);
+            states[newStatei.getIndex()] = newStatei;
+            for(int k = 0; k<newStatesList.get(i).getPrevStatesCombined().size();k++)
+            {
+                if(newStatesList.get(i).getPrevStatesCombined().get(k).getAccept())
+                {
+                    newStatesList.get(i).setAccept(true);
+                }
+            }
+            if(newStatesList.get(i).getAccept())
+            {
+                acceptStates.add(newStatesList.get(i).getIndex()+"");
+            }
+            if(newStatei.getStart())
+            {
+                initStateName = newStatei.getIndex()+"";
+            }
+        }
+
+        System.out.println("combined: " + newStatesList.size()+" states:");
+        printFA();
+
+    }
+    public State getInitState()
+    {
+        return initState;
+    }
+    public ArrayList<State> getStatesList()
+    {
+        return statesList;
+    }
 }

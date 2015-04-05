@@ -121,6 +121,8 @@ public class State
 
     public boolean getAccept(){return isAccept;}
 
+    public void setIndex(int indexIn){index = indexIn;}
+    
     public int getIndex(){ return index;}
 
     public static ArrayList<State> sortStatesList(ArrayList<State> list)

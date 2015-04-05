@@ -56,12 +56,14 @@ public class Main
             ArrayList<String> alphabet = readAlphabet();
             System.out.println("Alphabet read: "+alphabet.toString());
             String nextSection = fileIn.next();
+            FiniteAutomaton SpecFA = null;
+            FiniteAutomaton SysFA= null;
             if(nextSection.equals("Specification"))
             {
                 System.out.println("Read specification automaton:");
                 fileIn.nextLine();
                 fileIn.nextLine();
-                readAutomata(alphabet,specFA);
+                SpecFA= readAutomata(alphabet,specFA);
             }
             if(fileIn.hasNextLine())
             {
@@ -70,9 +72,18 @@ public class Main
 
                 if(nextLine.startsWith("%"))
                 {
-                    readAutomata(alphabet,sysFA);
+                    SysFA= readAutomata(alphabet,sysFA);
                 }
             }
+            if(SpecFA!=null && SysFA!=null)
+            {
+                //L(A) intersection 'L(S) = (L(A)' union L(SL))'
+                           SysFA.convertToComplement();
+               SpecFA.makeUnionWith(SysFA);
+               SpecFA.convertToComplement();
+               System.out.println("accepted string: "+SpecFA.findAcceptedString(10));
+            }
+
         }
         catch (Exception e)
         {
@@ -95,7 +106,7 @@ public class Main
 
     }
 
-    private void readAutomata(ArrayList<String> alphabet, FiniteAutomaton FA)
+    private FiniteAutomaton readAutomata(ArrayList<String> alphabet, FiniteAutomaton FA)
     {
 
         String  transitionLine = fileIn.nextLine();
@@ -123,9 +134,10 @@ public class Main
             }
         }
         FA = new FiniteAutomaton(alphabet,initState,finalStates,transitions);
-        FA.convertToDFA();
-        FA.convertToComplement();
-        System.out.println("String accepted by L(D'): "+FA.findAcceptedString(100));
+       FA.convertToDFA();
+      //  FA.convertToComplement();
+      return FA;
+
     }
 
 }
